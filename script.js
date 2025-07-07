@@ -40,6 +40,7 @@ function showStudyView() {
     });
   }
 
+  
 // Bloquea cualquier scroll táctil dentro de la tarjeta para evitar “bounce” en iOS
 document.getElementById('studyCentralArea').addEventListener('touchmove', e => {
   e.preventDefault();
@@ -193,6 +194,16 @@ document.getElementById('overlayExit').onclick = showTopicView;
 document.getElementById('overlayToggle').onclick = () => {
   darkMode = !darkMode;
   document.body.className = darkMode ? 'dark' : 'light';
+};
+// Botón para alternar pantalla completa
+document.getElementById('overlayFullscreen').onclick = () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      alert(`Error al activar pantalla completa: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
 };
 
 // Actualiza el contador “X of Y”
