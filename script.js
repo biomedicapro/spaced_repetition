@@ -40,24 +40,10 @@ function showStudyView() {
     });
   }
 
-// Bloquea solo el swipe hacia abajo (para evitar que salga del fullscreen en iOS/iPad)
-let touchStartY = 0;
-const centralEl = document.getElementById('studyCentralArea');
-
-centralEl.addEventListener('touchstart', e => {
-  touchStartY = e.touches[0].clientY;  // Guarda la posición inicial del toque
-}, { passive: true });
-
-centralEl.addEventListener('touchmove', e => {
-  const currentY = e.touches[0].clientY;
-  const deltaY = currentY - touchStartY;
-
-  if (deltaY > 0) {
-    // Si el swipe es hacia abajo, lo bloquea (evita salida de fullscreen)
-    e.preventDefault();
-  }
+// Bloquea cualquier scroll táctil dentro de la tarjeta para evitar “bounce” en iOS
+document.getElementById('studyCentralArea').addEventListener('touchmove', e => {
+  e.preventDefault();
 }, { passive: false });
-
 
 
   
