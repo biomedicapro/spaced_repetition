@@ -61,51 +61,97 @@ body.dark .folder-container { background:#000; }
 }
 .overlay-top-center #cardCounter { font-weight:bold; }
 .overlay-top-right {
-  top:10px; right:10px; font-size:1.5em; cursor:pointer;
+  top:10px; right:10px; display:flex; gap:10px;
+  font-size:1.5em; cursor:pointer;
 }
-/* Dificultad 0–5 al centro derecha */
+
+/* ————— CONTENEDOR INFERIOR / DOS FRANJAS ————— */
 .overlay-right-center {
-  top:50%; right:10px; transform:translateY(-50%);
-  display:flex; flex-direction:column; gap:5px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  /* degradado verde arriba 50% y rojo abajo 50%, semitransparente */
+  background: linear-gradient(
+    to bottom,
+    rgba(76,175,80,0.15) 0%,
+    rgba(76,175,80,0.15) 50%,
+    rgba(244,67,54,0.15) 50%,
+    rgba(244,67,54,0.15) 100%
+  );
+  z-index: 10;
 }
-.diff-btn {
-  width:40px; height:40px; border:none; border-radius:4px;
-  background:#ddd; cursor:pointer; font-size:1em;
+
+/* ————— BOTONES DE DIFICULTAD COMO TEXTO ————— */
+.overlay-right-center .diff-btn {
+  flex: 1 1 calc(33.333% - 0px); /* Tres columnas iguales */
+  position: relative;            /* Para el ::after */
+  text-align: center;
+  background: transparent;       /* Sin fondo propio */
+  border: none;                  /* Quita cualquier contorno */
+  padding: 8px 0;                /* Altura cómoda */
+  margin: 0;                     /* Sin márgenes internos */
+  font-weight: normal;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s;
 }
-.diff-btn:hover { background:#ccc; }
+
+/* ————— SEPARADORES VERTICALES ————— */
+.overlay-right-center .diff-btn:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 60%;
+  background: currentColor; /* Usamos el mismo color del texto */
+}
+
+/* ————— COLOR DEL TEXTO SEGÚN DIFICULTAD ————— */
+/* Muy fácil, Fácil, Medio → verde */
+.overlay-right-center .diff-btn[data-difficulty="0"],
+.overlay-right-center .diff-btn[data-difficulty="1"],
+.overlay-right-center .diff-btn[data-difficulty="2"] {
+  color: #4caf50;
+}
+
+/* Difícil, Muy difícil, Extremo → rojo */
+.overlay-right-center .diff-btn[data-difficulty="3"],
+.overlay-right-center .diff-btn[data-difficulty="4"],
+.overlay-right-center .diff-btn[data-difficulty="5"] {
+  color: #f44336;
+}
+
+/* ————— SIN CAMBIO DE FONDO EN HOVER ————— */
+.overlay-right-center .diff-btn:hover {
+  background: transparent;
+}
 
 /* OCULTAR LO ANTERIOR */
 #studyTopPanel, #studyMain, #studyRightPanel, #navArrows { display:none!important; }
 
-
-/* Cuando estemos en pantalla completa, forzamos 100% y ocultamos overflow */
+/* FULLSCREEN FIXES */
 :fullscreen, :-webkit-full-screen {
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
-
-/* Y sobre el body también para prevenir bounce en iOS */
 body:fullscreen, body:-webkit-full-screen {
   overflow: hidden;
-  touch-action: none;  /* Deshabilita gestos de desplazamiento */
+  touch-action: none;
 }
-
-/* Deshabilita overscroll en todo el documento (para navegadores que soportan overscroll-behavior) */
 html, body, #studyCentralArea {
-  overscroll-behavior: none;      /* Previene pull-to-refresh y bounce */
-  -webkit-overflow-scrolling: auto; /* Asegura que iOS no añada scroll momentum */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: auto;
 }
 
-.overlay-top-right {
-  position: fixed; /* ← antes era absolute */
-  top: calc(10px + env(safe-area-inset-top, 0px));
-  right: calc(10px + env(safe-area-inset-right, 0px));
-  display: flex;
-  gap: 10px;
-  z-index: 1000; /* Asegura que esté al frente */
-}
-
+/* ÍCONOS */
 .overlay-icon {
   cursor: pointer;
   padding: 8px;
@@ -113,61 +159,31 @@ html, body, #studyCentralArea {
   font-size: 1.5em;
 }
 
-
-/* ————————— FLASHCARD ————————— */
-body.light .flashcard {
-  background-color: #ffffff;  /* fondo blanco */
-  color: #111111;             /* texto casi negro */
-}
-body.dark .flashcard {
-  background-color: #1e1e1e;  /* fondo muy oscuro, pero no negro puro */
-  color: #eeeeee;             /* texto claro */
-}
-
-/* —————— BOTONES DE DIFICULTAD 0–5 —————— */
-.diff-btn {
-  font-size: 1rem;
-  padding: 6px 10px;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-}
-
-/* modo claro */
-body.light .diff-btn {
-  background-color: #f0f0f0;
-  color: #111111;
-  border-color: #ccc;
-}
-/* modo oscuro */
-body.dark .diff-btn {
-  background-color: #444444;
-  color: #ffffff;
-  border-color: #555555;
-}
-
-/* ————— ICONO DE MODO ————— */
-.overlay-icon {
-  font-size: 1.5em;
-  line-height: 1;
-}
-
-
-
-
-
-
-/* --- Ajustes de tipografía para flashcards --- */
-/* Baja ligeramente el tamaño de letra y justifica todo */
+/* TIPOGRAFÍA FLASHCARD */
 .flashcard .content h2 {
-  font-size: 0.9em;       /* antes era 1.5em en tu diseño base */
-  text-align: justify;    /* alinea justificando párrafos */
-  margin: 0;              /* opcional: limpia márgenes si los tuvieses */
-  line-height: 1.4;       /* un poco de interlínea para legibilidad */
+  font-size: 0.9em;
+  text-align: justify;
+  margin: 0;
+  line-height: 1.4;
 }
-
-/* Quita la negrita sólo en las respuestas */
 .flashcard .content h2.answer {
   font-weight: normal;
+}
+
+/* FONDO FLASHCARD */
+.flashcard {
+  width:100%; height:100%; display:flex;
+  align-items:center; justify-content:center;
+  padding:20px; text-align:center;
+  font-size:1.5em;
+}
+
+/* MODO DÍA / NOCHE SOBRE LA FLASHCARD */
+body.light .flashcard {
+  background-color: #ffffff;  /* fondo blanco en día */
+  color: #111111;             /* texto oscuro en día */
+}
+body.dark .flashcard {
+  background-color: #1e1e1e;  /* fondo oscuro en noche */
+  color: #eeeeee;             /* texto claro en noche */
 }
