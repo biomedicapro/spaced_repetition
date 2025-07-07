@@ -90,3 +90,9 @@ body:fullscreen, body:-webkit-full-screen {
   overflow: hidden;
   touch-action: none;  /* Deshabilita gestos de desplazamiento */
 }
+
+/* Deshabilita overscroll en todo el documento (para navegadores que soportan overscroll-behavior) */
+html, body, #studyCentralArea {
+  overscroll-behavior: none;      /* Previene pull-to-refresh y bounce */
+  -webkit-overflow-scrolling: auto; /* Asegura que iOS no añada scroll momentum */
+}
