@@ -189,11 +189,18 @@ centralArea.addEventListener('touchend', e => {
 // Ícono “Salir”
 document.getElementById('overlayExit').onclick = showTopicView;
 
-// Ícono cambiar modo claro/oscuro
-document.getElementById('overlayToggle').onclick = () => {
+// Toggle claro/oscuro + cambio de icono
+const toggleBtn = document.getElementById('overlayToggle');
+
+toggleBtn.onclick = () => {
+  // alterna la variable y la clase
   darkMode = !darkMode;
   document.body.className = darkMode ? 'dark' : 'light';
+  
+  // actualiza el icono: 🌙 para modo claro → noche, ☀️ para modo oscuro → día
+  toggleBtn.textContent = darkMode ? '☼	' : '☾';
 };
+
 
 
 document.getElementById('overlayFullscreen').onclick = () => {
