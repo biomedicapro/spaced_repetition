@@ -157,9 +157,14 @@ function renderCurrentFace() {
 
   // Si currentFaceIndex = 0 muestra la pregunta; si = 1 muestra la respuesta
   if (currentFaceIndex === 0) {
+    // Pregunta: seguimos usando h2 sin clase adicional (queda en negrita)
     div.innerHTML = `<div class="content"><h2>${q.pregunta}</h2></div>`;
   } else {
-    div.innerHTML = `<div class="content"><h2>${q.respuesta}</h2></div>`;
+    // Respuesta: añadimos class="answer" para quitar negrita
+    div.innerHTML = `
+      <div class="content">
+        <h2 class="answer">${q.respuesta}</h2>
+      </div>`;
   }
 
   central.appendChild(div);                                         // Inserta en pantalla
