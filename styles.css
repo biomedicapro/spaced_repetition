@@ -96,3 +96,17 @@ html, body, #studyCentralArea {
   overscroll-behavior: none;      /* Previene pull-to-refresh y bounce */
   -webkit-overflow-scrolling: auto; /* Asegura que iOS no añada scroll momentum */
 }
+
+.overlay-top-right {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.overlay-icon {
+  cursor: pointer;
+  padding: 8px;
+  user-select: none;
+}
