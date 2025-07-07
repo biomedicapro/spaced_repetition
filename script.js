@@ -125,91 +125,93 @@ const ungraded = res.questions.filter(q => {
     });
 }
 
-/* MOSTRAR PREGUNTA / RESPUESTA CON CLIC Y SWIPE */
-let isShowingAnswer = false;   // Controla si mostramos respuesta o pregunta
-let touchStartY = 0;           // Para detección de swipe
+/* MOSTRAR PREGUNTA ACTUAL Y FLIP ON TAP/SWIPE */
+function renderCurrentFace() {
+  const q = questions[currentQuestionIndex];                        // Pregunta actual
+  const central = document.getElementById('studyCentralArea');      // Contenedor
+  central.innerHTML = '';                                           // Limpia contenido previo
 
-function renderCurrentFace(){
-  const q = questions[currentQuestionIndex];              // Pregunta actual
-  const central = document.getElementById('studyCentralArea');  // Contenedor central
-  central.innerHTML = '';                                 // Limpia contenido
-
-  // Decide qué texto mostrar
-  const text = isShowingAnswer ? q.respuesta : q.pregunta;  
-
-  // Crea la "cara"
-  const div = document.createElement('div');
+  const div = document.createElement('div');                        // Nueva “cara”
   div.className = 'face active';
-  div.innerHTML = `<div class="content"><h2>${text}</h2></div>`;
-  central.appendChild(div);
 
-  // Toggle Pregunta/Respuesta al hacer clic/tap
-  central.onclick = () => {
-    isShowingAnswer = !isShowingAnswer;  // Alterna estado
-    renderCurrentFace();                  // Redibuja con el otro texto
-  };
+  // Si currentFaceIndex = 0 muestra la pregunta; si = 1 muestra la respuesta
+  if (currentFaceIndex === 0) {
+    div.innerHTML = `<div class="content"><h2>${q.pregunta}</h2></div>`;
+  } else {
+    div.innerHTML = `<div class="content"><h2>${q.respuesta}</h2></div>`;
+  }
 
-  // Swipe down para calificar 0 en móvil
-  central.ontouchstart = e => {
-    touchStartY = e.touches[0].clientY;
-  };
-  central.ontouchend = e => {
-    const deltaY = e.changedTouches[0].clientY - touchStartY;
-    if (deltaY > 50) gradeAndNext('0');  // Si baja >50px, califica 0 y pasa
-  };
+  central.appendChild(div);                                         // Inserta en pantalla
+  updateCounter();                                                  // Actualiza el contador superior
 }
 
-// Guarda dificultad y avanza a siguiente tarjeta
-function gradeAndNext(diff) {
-  const qid = questions[currentQuestionIndex].id;
-  const params = new URLSearchParams({
-    action: 'updateDifficulty',
-    category: currentCategory,
-    subject:  currentSubject,
-    topic:    currentTopic,
-    id:       qid,
-    difficulty: diff
-  });
-  // POST al backend
-  fetch(scriptURL, {
-    method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded'},
-    body: params.toString()
-  });
-
-  // Elimina la tarjeta calificada
-  questions.splice(currentQuestionIndex,1);
-  // Ajusta índice si era la última
-  if (currentQuestionIndex >= questions.length) {
-    currentQuestionIndex = questions.length - 1;
-  }
-  // Si ya no quedan tarjetas
-  if (questions.length === 0) {
-    alert('¡Terminaste todas las tarjetas!');
-    showTopicView();
-    return;
-  }
-  // Reinicia estado y actualiza vista
-  isShowingAnswer = false;
-  updateCounter();
+// Al hacer tap/click alterna pregunta ↔ respuesta
+document.getElementById('studyCentralArea').onclick = () => {
+  currentFaceIndex = currentFaceIndex === 0 ? 1 : 0;
   renderCurrentFace();
-}
+};
 
-// Actualiza el contador "X of Y"
-function updateCounter(){
-  document.getElementById('cardCounter').textContent =
-    `${currentQuestionIndex+1} of ${questions.length}`;
-}
+// Detectar swipe up para calificar como 0 y avanzar
+let touchStartY = 0;
+const centralArea = document.getElementById('studyCentralArea');
+centralArea.addEventListener('touchstart', e => {
+  touchStartY = e.touches[0].clientY;
+});
+centralArea.addEventListener('touchend', e => {
+  const deltaY = touchStartY - e.changedTouches[0].clientY;
+  if (deltaY > 50 && questions.length) {                          // Swipe up suficientemente grande
+    // Simula clic en el botón dificultad “0”
+    document.querySelector('.diff-btn[data-difficulty="0"]').click();
+  }
+});
 
-// Exit y toggle claro/oscuro
-document.getElementById('overlayExit').onclick   = showTopicView;
-document.getElementById('overlayToggle').onclick = ()=>{
+// Ícono “Salir”
+document.getElementById('overlayExit').onclick = showTopicView;
+
+// Ícono cambiar modo claro/oscuro
+document.getElementById('overlayToggle').onclick = () => {
   darkMode = !darkMode;
   document.body.className = darkMode ? 'dark' : 'light';
 };
 
-// Deshabilita navegación por teclado
-window.onkeydown = null;
+// Actualiza el contador “X of Y”
+function updateCounter() {
+  document.getElementById('cardCounter').textContent =
+    `${currentQuestionIndex + 1} of ${questions.length}`;
+}
 
-// Inicia al cargar
-window.onload = loadStructure;
+/* CALIFICAR DIFICULTAD 0–5 */
+document.querySelectorAll('.diff-btn').forEach(btn=>{  // Selecciona todos los botones de dificultad (0 a 5)
+  btn.onclick=()=>{  // Asigna función al hacer clic en cada botón
+    const diff=btn.dataset.difficulty;  // Obtiene el valor de dificultad del atributo data-difficulty del botón
+    const qid=questions[currentQuestionIndex].id;  // Obtiene el ID de la pregunta actual
+    // Prepara los datos a enviar al backend (Apps Script)
+    const params=new URLSearchParams({
+      action:'updateDifficulty',
+      category: currentCategory,
+      subject: currentSubject,
+      topic: currentTopic,
+      id: qid,
+      difficulty: diff
+    });
+    // Envía la dificultad al backend mediante POST
+    fetch(scriptURL,{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:params.toString()
+    });
+    // Elimina la tarjeta actual de la lista local (ya fue calificada)
+    questions.splice(currentQuestionIndex,1);
+    if(currentQuestionIndex >= questions.length) currentQuestionIndex = questions.length-1;  // Ajusta el índice si era la última tarjeta
+    if(questions.length===0){  // Si ya no quedan tarjetas
+      alert('¡Terminaste todas las tarjetas!');  // Muestra mensaje de fin
+      showTopicView();  // Regresa a la vista de temas
+    } else {
+      updateCounter();  // Actualiza el contador
+      renderCurrentFace();  // Muestra la nueva tarjeta actual
+    }
+  };
+});
+
+// iniciar
+window.onload = loadStructure;  // Al cargar la página, ejecuta la función para cargar la estructura de categorías/asignaturas/temas
