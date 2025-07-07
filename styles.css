@@ -76,3 +76,17 @@ body.dark .folder-container { background:#000; }
 
 /* OCULTAR LO ANTERIOR */
 #studyTopPanel, #studyMain, #studyRightPanel, #navArrows { display:none!important; }
+
+
+/* Cuando estemos en pantalla completa, forzamos 100% y ocultamos overflow */
+:fullscreen, :-webkit-full-screen {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Y sobre el body también para prevenir bounce en iOS */
+body:fullscreen, body:-webkit-full-screen {
+  overflow: hidden;
+  touch-action: none;  /* Deshabilita gestos de desplazamiento */
+}
