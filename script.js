@@ -40,13 +40,11 @@ function showStudyView() {
     });
   }
 
-// Seleccionamos el área central de la flashcard
-const centralArea = document.getElementById('studyCentralArea');
-
-// Bloqueamos cualquier desplazamiento táctil salvo el swipe up (que ya manejas)
-centralArea.addEventListener('touchmove', e => {
+// Bloquea cualquier scroll táctil dentro de la tarjeta para evitar “bounce” en iOS
+document.getElementById('studyCentralArea').addEventListener('touchmove', e => {
   e.preventDefault();
 }, { passive: false });
+
 
   
   // Renderiza la primera cara de la flashcard
