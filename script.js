@@ -40,6 +40,15 @@ function showStudyView() {
     });
   }
 
+// Seleccionamos el área central de la flashcard
+const centralArea = document.getElementById('studyCentralArea');
+
+// Bloqueamos cualquier desplazamiento táctil salvo el swipe up (que ya manejas)
+centralArea.addEventListener('touchmove', e => {
+  e.preventDefault();
+}, { passive: false });
+
+  
   // Renderiza la primera cara de la flashcard
   renderCurrentFace();
 }
@@ -226,6 +235,19 @@ document.querySelectorAll('.diff-btn').forEach(btn=>{  // Selecciona todos los b
     }
   };
 });
+
+
+// Cuando cambie full-screen, bloquea/desbloquea overflow
+document.addEventListener('fullscreenchange', () => {
+  if (document.fullscreenElement) {
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+  }
+});
+
 
 // iniciar
 window.onload = loadStructure;  // Al cargar la página, ejecuta la función para cargar la estructura de categorías/asignaturas/temas
