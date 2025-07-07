@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estudio Interactivo de Preguntas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light">
+  <!-- VISTAS DE NAVEGACIÓN -->
+  <div id="viewCategories" class="view active">
+    <div class="folder-container">
+      <div class="folder-header">Selecciona Categoría</div>
+      <ul id="categoryList" class="folder-list"></ul>
+    </div>
+  </div>
+  <div id="viewSubjects" class="view">
+    <div class="folder-container">
+      <div class="back-button" onclick="showFolderView()">&larr; Volver</div>
+      <div class="folder-header">
+        Selecciona Asignatura en <span id="currentCategory"></span>
+      </div>
+      <ul id="subjectList" class="folder-list"></ul>
+    </div>
+  </div>
+  <div id="viewTopics" class="view">
+    <div class="folder-container">
+      <div class="back-button" onclick="showSubjectView()">&larr; Volver</div>
+      <div class="folder-header">
+        Selecciona Tema en <span id="currentSubject"></span>
+      </div>
+      <ul id="topicList" class="folder-list"></ul>
+    </div>
+  </div>
+
+  <!-- VISTA DE ESTUDIO -->
+  <div id="viewStudy" class="view">
+    <!-- Ícono Salir -->
+    <div id="overlayExit" class="overlay-top-left" title="Salir">&larr;</div>
+    <!-- Contador y nombre de tema -->
+    <div id="overlayCenter" class="overlay-top-center">
+      <div id="cardCounter">0 of 0</div>
+      <div id="topicName"></div>
+    </div>
+    <!-- Toggle Claro/Oscuro -->
+    <div id="overlayToggle" class="overlay-top-right" title="Cambiar modo">&#9790;</div>
+    <!-- Área de la flashcard -->
+    <div id="studyCentralArea" class="flashcard"></div>
+    <!-- Botones dificultad 0–5 -->
+    <div id="overlayDifficulty" class="overlay-right-center">
+      <button class="diff-btn" data-difficulty="0">0</button>
+      <button class="diff-btn" data-difficulty="1">1</button>
+      <button class="diff-btn" data-difficulty="2">2</button>
+      <button class="diff-btn" data-difficulty="3">3</button>
+      <button class="diff-btn" data-difficulty="4">4</button>
+      <button class="diff-btn" data-difficulty="5">5</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

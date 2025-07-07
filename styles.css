@@ -1,0 +1,78 @@
+/* RESET */
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; height:100%; }
+body { font-family:"Segoe UI",sans-serif; transition:background-color .3s,color .3s; }
+body.light { background:#fff; color:#111; }
+body.dark  { background:#111; color:#eee; }
+
+/* VISTAS */
+.view { display:none; }
+.view.active { display:block; }
+
+/* EXPLORADOR */
+.folder-container { padding:20px; background:#f9f9f9; min-height:100%; }
+body.dark .folder-container { background:#000; }
+.folder-header { font-size:1.5em; margin-bottom:15px; border-bottom:1px solid #ccc; padding-bottom:5px; }
+.folder-list { list-style:none; }
+.folder-item {
+  padding:10px; border:1px solid #aaa; border-radius:4px;
+  margin-bottom:10px; background:#f5f5f5; cursor:pointer;
+  transition:background .2s; position:relative;
+}
+.folder-item:hover { background:#eaeaea; }
+.folder-item:before {
+  content:"\1F4C1"; position:absolute; left:10px; top:50%;
+  transform:translateY(-50%); font-size:1.5em;
+}
+.folder-item span { margin-left:40px; }
+.back-button {
+  margin-bottom:15px; display:inline-block; padding:5px 10px;
+  background:#444; color:#fff; border-radius:4px; cursor:pointer;
+}
+
+/* ESTUDIO: FLASHCARD FULLSCREEN */
+#viewStudy {
+  position:relative; width:100%; height:100vh;
+  background:#fafafa;
+}
+#viewStudy.active { display:block; }
+
+/* FONDO FLASHCARD */
+.flashcard {
+  width:100%; height:100%; display:flex;
+  align-items:center; justify-content:center;
+  padding:20px; text-align:center;
+  font-size:1.5em;
+}
+
+/* OVERLAYS */
+.overlay-top-left,
+.overlay-top-center,
+.overlay-top-right,
+.overlay-right-center {
+  position:absolute; z-index:10;
+}
+.overlay-top-left {
+  top:10px; left:10px; font-size:1.5em; cursor:pointer;
+}
+.overlay-top-center {
+  top:10px; left:50%; transform:translateX(-50%);
+  text-align:center; line-height:1.2;
+}
+.overlay-top-center #cardCounter { font-weight:bold; }
+.overlay-top-right {
+  top:10px; right:10px; font-size:1.5em; cursor:pointer;
+}
+/* Dificultad 0–5 al centro derecha */
+.overlay-right-center {
+  top:50%; right:10px; transform:translateY(-50%);
+  display:flex; flex-direction:column; gap:5px;
+}
+.diff-btn {
+  width:40px; height:40px; border:none; border-radius:4px;
+  background:#ddd; cursor:pointer; font-size:1em;
+}
+.diff-btn:hover { background:#ccc; }
+
+/* OCULTAR LO ANTERIOR */
+#studyTopPanel, #studyMain, #studyRightPanel, #navArrows { display:none!important; }
