@@ -152,3 +152,22 @@ body.dark .diff-btn {
   font-size: 1.5em;
   line-height: 1;
 }
+
+
+
+
+
+
+/* --- Ajustes de tipografía para flashcards --- */
+/* Baja ligeramente el tamaño de letra y justifica todo */
+.flashcard .content h2 {
+  font-size: 0.9em;       /* antes era 1.5em en tu diseño base */
+  text-align: justify;    /* alinea justificando párrafos */
+  margin: 0;              /* opcional: limpia márgenes si los tuvieses */
+  line-height: 1.4;       /* un poco de interlínea para legibilidad */
+}
+
+/* Quita la negrita sólo en las respuestas */
+.flashcard .content h2.answer {
+  font-weight: normal;
+}
