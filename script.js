@@ -41,9 +41,9 @@ function showStudyView() {
   }
 
 // Bloquea cualquier scroll táctil dentro de la tarjeta para evitar “bounce” en iOS
-document.getElementById('studyCentralArea').addEventListener('touchmove', e => {
-  e.preventDefault();
-}, { passive: false });
+const centralArea = document.getElementById('studyCentralArea');
+centralArea.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
 
 
   
