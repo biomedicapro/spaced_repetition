@@ -195,6 +195,18 @@ document.getElementById('overlayToggle').onclick = () => {
   document.body.className = darkMode ? 'dark' : 'light';
 };
 
+
+document.getElementById('overlayFullscreen').onclick = () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      alert(`Error al activar pantalla completa: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+};
+
+
 // Actualiza el contador “X of Y”
 function updateCounter() {
   document.getElementById('cardCounter').textContent =
