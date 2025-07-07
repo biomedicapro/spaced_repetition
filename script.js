@@ -20,16 +20,30 @@ function showTopicView(){
   document.querySelectorAll('.view').forEach(v=>v.style.display='none');
   document.getElementById('viewTopics').style.display='block';
 }
-function showStudyView(){
-  document.querySelectorAll('.view').forEach(v=>v.style.display='none');
+function showStudyView() {
+  // Oculta todas las vistas
+  document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+
+  // Muestra la vista de estudio
   const vs = document.getElementById('viewStudy');
-  vs.style.display='block';
+  vs.style.display = 'block';
   vs.classList.add('active');
-  // al cargar mazo inicializamos contador y tema
+
+  // Inicializa contador y nombre del tema
   document.getElementById('cardCounter').textContent = `1 of ${questions.length}`;
   document.getElementById('topicName').textContent = currentTopic;
+
+  // Pide el modo pantalla completa (similar a F11)
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      console.warn(`No se pudo activar pantalla completa: ${err.message}`);
+    });
+  }
+
+  // Renderiza la primera cara de la flashcard
   renderCurrentFace();
 }
+
 
 /* CARGA ESTRUCTURA */
 function loadStructure(){
