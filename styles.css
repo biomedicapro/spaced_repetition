@@ -187,3 +187,26 @@ body.dark .flashcard {
   background-color: #1e1e1e;  /* fondo oscuro en noche */
   color: #eeeeee;             /* texto claro en noche */
 }
+
+
+
+
+
+/* Solución específica para iPad o dispositivos Apple */
+@media only screen and (max-width: 1024px) and (min-width: 768px) and (orientation: portrait), 
+       only screen and (max-width: 1024px) and (min-width: 768px) and (orientation: landscape) {
+  body {
+    padding-bottom: 20px; /* Ajusta este valor según el espacio necesario */
+  }
+
+  #viewStudy {
+    margin-bottom: 20px; /* Asegura que el contenido no quede tapado */
+  }
+}
+
+/* Solución general para dispositivos con barras de navegación */
+@supports (-webkit-touch-callout: none) {
+  body {
+    padding-bottom: 30px; /* Ajuste adicional para dispositivos con barra */
+  }
+}
