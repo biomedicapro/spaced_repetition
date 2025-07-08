@@ -187,18 +187,3 @@ body.dark .flashcard {
   background-color: #1e1e1e;  /* fondo oscuro en noche */
   color: #eeeeee;             /* texto claro en noche */
 }
-
-
-
-
-
-/* Solución para dispositivos Apple */
-@media only screen and (max-width: 1024px) and (-webkit-min-device-pixel-ratio: 2), 
-       only screen and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2), 
-       only screen and (max-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-  
-  /* Aquí va el CSS específico para dispositivos Apple (iPad, iPhone, etc.) */
-  .overlay-right-center {
-    padding: 10px 0 80px 0; 
-  }
-}
