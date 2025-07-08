@@ -15,7 +15,7 @@ body.dark .folder-container { background:#000; }
 .folder-header { font-size:1.5em; margin-bottom:15px; border-bottom:1px solid #ccc; padding-bottom:5px; }
 .folder-list { list-style:none; }
 .folder-item {
-  padding:10px; border:1px solid #aaa; border-radius:4px;
+  padding:10px 60px; border:1px solid #aaa; border-radius:4px;
   margin-bottom:10px; background:#f5f5f5; cursor:pointer;
   transition:background .2s; position:relative;
 }
